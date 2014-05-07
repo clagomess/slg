@@ -105,7 +105,8 @@ public class Slb {
 		
 		int y = 0; //vai ser usado em todo while
 		
-		boolean reverso = false;
+		int xinicio = 0;
+		int xfim = 0;
 		
 		while(!fimcabecalho){
 			
@@ -117,6 +118,7 @@ public class Slb {
 					
 					if(imgPixel[y][x] == 1){
 						encontroubit = true;
+						xinicio = x;
 					}else{
 						continue;
 					}
@@ -142,19 +144,32 @@ public class Slb {
 							this.ponto[1][1] = y;
 							this.ponto[1][0] = x;
 						}
-						
-						System.out.println(new Integer(x).toString());
+						xfim = x;
 					}
 				}
 			}
-			
 			y++;
 		}
+		
+		System.out.println(new Integer(xinicio).toString() + " - " + new Integer(xfim).toString());
 		
 		this.ponto[0][0] += 1;
 		this.ponto[0][1] += 1;
 		this.ponto[1][0] += 1;
 		this.ponto[1][1] += 1;
+		
+		// Quando a reta for / inverter os pontos
+		if(xinicio > xfim){
+			int ax = this.ponto[0][0];
+			int ay = this.ponto[0][1];
+			int bx = this.ponto[1][0];
+			int by = this.ponto[1][1];
+			
+			this.ponto[0][0] = bx;
+			this.ponto[0][1] = by;
+			this.ponto[1][0] = ax;
+			this.ponto[1][1] = ay;
+		}
 		
 		System.out.println("AX: " + new Integer(this.ponto[0][0]).toString());
 		System.out.println("AY: " + new Integer(this.ponto[0][1]).toString());
@@ -176,14 +191,14 @@ public class Slb {
 		//Calcula o Giro
 		double giro;
 		if(catetoO < 0){
-			giro = 90 - angulo; //Reta /
+			giro = 90 - (angulo * -1);
 			System.out.println("Reta: /");
 		}else{
-			giro = (90 -angulo) * -1; //Reta \
+			giro = (90 -angulo) * -1;
 			System.out.println("Reta: \\");
 		}
 		
-		System.out.println("GRAU: " + new Double(giro).toString());
+		System.out.println("GIRO: " + new Double(giro).toString());
 		
 		//Rodando, Rodando		
 		BufferedImage resizedImg = new BufferedImage(this.getSizeX(),this.getSizeY(),this.getImg().getType());
