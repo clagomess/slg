@@ -1,1 +1,8 @@
 * text=auto !eol
+/.classpath -text
+/.project -text
+.settings/org.eclipse.jdt.core.prefs -text
+bin/Main.class -text
+bin/Slb.class -text
+src/Main.java -text
+src/Slb.java -text
