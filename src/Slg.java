@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,8 +12,23 @@ public class Slg {
 	private int sizeX;
 	private int sizeY;
 	private int ponto[][] = new int[2][2];
+	private int brilho = 150;
+	private int dimencao = 400;
+	private Ui ui = new Ui();
 	
-	private BufferedImage getImg() {
+	public int getDimencao() {
+		return dimencao;
+	}
+	public void setDimencao(int dimencao) {
+		this.dimencao = dimencao;
+	}
+	public int getBrilho() {
+		return brilho;
+	}
+	public void setBrilho(int brilho) {
+		this.brilho = brilho;
+	}
+	public BufferedImage getImg() {
 		return img;
 	}
 	private void setImg(BufferedImage img) {
@@ -31,13 +47,13 @@ public class Slg {
 		this.sizeY = sizeY;
 	}
 	
-	public void setIMG(String src){
+	public boolean setIMG(String src){
 		
 		try{
 			BufferedImage originalImg = ImageIO.read(new File(src));
 			int type = (originalImg.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImg.getType());
 			
-			int n_width = 400;
+			int n_width = this.getDimencao();
 			int n_height = (originalImg.getHeight() * n_width) / originalImg.getWidth();
 			
 			BufferedImage resizedImg = new BufferedImage(n_width,n_height,type);
@@ -48,18 +64,18 @@ public class Slg {
 			this.setImg(resizedImg);
 			this.setSizeX(resizedImg.getWidth());
 			this.setSizeY(resizedImg.getHeight());
-			
+			return true;
 		}catch(IOException e){
-			System.out.print(e.getMessage());
-			System.exit(0);
+			ui.alert(e.getMessage());
+			return false;
 		}		
 	}
 	
-	public void gravarBufferIMG(){
+	public void gravarBufferIMG(String src, String extensao){
 		try{
-			ImageIO.write(this.getImg(),"jpg", new File("/home/claudio/buffer.jpg"));
+			ImageIO.write(this.getImg(),extensao, new File(src));
 		}catch(IOException e){
-			System.out.print(e.getMessage());
+			ui.alert(e.getMessage());
 		}
 	}
 	
@@ -80,10 +96,9 @@ public class Slg {
 		int g = (rgb >> 8) & 0xFF;
         int b = rgb & 0xFF;
         
-        int claridade = 200;
         int bit = 0;
         
-        if(r < claridade && g < claridade && b < claridade){
+        if(r < this.getBrilho() && g < this.getBrilho() && b < this.getBrilho()){
         	bit = 1;
         }
         
@@ -190,17 +205,61 @@ public class Slg {
 			giro = angulo * -1;
 		}else{
 			giro = (90 - angulo) * -1;
-		}		
+		}
+		
+		if(new Double(giro).isNaN()){
+			giro = 0;
+		}
 		
 		System.out.println("GIRO: " + new Double(giro).toString());
 		
 		//Rodando, Rodando		
 		BufferedImage resizedImg = new BufferedImage(this.getSizeX(),this.getSizeY(),this.getImg().getType());
 		Graphics2D g = resizedImg.createGraphics();
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, this.getSizeX(), this.getSizeY());
 		g.rotate(Math.toRadians(giro));
 		g.drawImage(this.getImg(), 0, 0, this.getSizeX(), this.getSizeY(), null);
 		g.dispose();
 		
 		this.setImg(resizedImg);
+	}
+	
+	public void bitToImg(){
+		int pixel[][] = this.imgToBit();
+		
+		BufferedImage bufferimg = new BufferedImage(this.getSizeX(), this.getSizeY(), BufferedImage.TYPE_BYTE_BINARY);
+		
+		for(int y = 0; y < this.getSizeY(); y++){
+			for(int x = 0; x < this.getSizeX(); x++){
+				if(pixel[y][x] == 1){
+					bufferimg.setRGB(x, y, Color.BLACK.getRGB());
+				}else{
+					bufferimg.setRGB(x, y, Color.WHITE.getRGB());
+				}
+			}
+		}
+		
+		this.setImg(bufferimg);
+	}
+	
+	public BufferedImage createThumb(int width, int height){
+		int n_width, n_height;
+		
+		BufferedImage originalImg = this.getImg();
+		
+		n_width = width;
+		n_height = (originalImg.getHeight() * n_width) / originalImg.getWidth();
+		
+		if(n_height > height){
+			n_width = (originalImg.getWidth() * n_height) / originalImg.getHeight();
+		}
+		
+		BufferedImage resizedImg = new BufferedImage(n_width,n_height,BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = resizedImg.createGraphics();
+		g.drawImage(originalImg, 0, 0, n_width, n_height, null);
+		g.dispose();
+		
+		return resizedImg;
 	}
 }
