@@ -53,7 +53,7 @@ public class Ui {
 		final JLabel lDestino = new JLabel("-");
 		
 		panel.add(new JLabel("Imagem Gabarito:"));
-		JButton bArquivo = new JButton("Selecionar Arquivo");
+		JButton bArquivo = new JButton("Selecionar");
 		bArquivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				JFileChooser fArquivo = new JFileChooser("");
@@ -67,7 +67,7 @@ public class Ui {
 		panel.add(bArquivo);
 		
 		panel.add(new JLabel("Pasta Saida:"));
-		JButton bPasta = new JButton("Selecionar Pasta");
+		JButton bPasta = new JButton("Selecionar");
 		bPasta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
 				JFileChooser fArquivo = new JFileChooser();
