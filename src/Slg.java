@@ -51,12 +51,11 @@ public class Slg {
 		
 		try{
 			BufferedImage originalImg = ImageIO.read(new File(src));
-			int type = (originalImg.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : originalImg.getType());
 			
 			int n_width = this.getDimencao();
 			int n_height = (originalImg.getHeight() * n_width) / originalImg.getWidth();
 			
-			BufferedImage resizedImg = new BufferedImage(n_width,n_height,type);
+			BufferedImage resizedImg = new BufferedImage(n_width,n_height,BufferedImage.TYPE_BYTE_GRAY);
 			Graphics2D g = resizedImg.createGraphics();
 			g.drawImage(originalImg, 0, 0, n_width, n_height, null);
 			g.dispose();

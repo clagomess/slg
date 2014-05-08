@@ -37,11 +37,11 @@ public class Ui {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Dados"));
 		panel.setPreferredSize(new Dimension(670, 60));
 		
-		panel.add(new JLabel("Dimenção:"));
+		panel.add(new JLabel("Dimensão:"));
 
-		final JTextField tDimencao = new JTextField(5);
-		tDimencao.setText("400");
-		panel.add(tDimencao);
+		final JTextField tDimensao = new JTextField(5);
+		tDimensao.setText("400");
+		panel.add(tDimensao);
 		
 		panel.add(new JLabel("Brilho:"));
 		
@@ -129,7 +129,7 @@ public class Ui {
 			public void actionPerformed(ActionEvent arg0) {
 				Slg slg = new Slg();
 				
-				slg.setDimencao(new Integer(tDimencao.getText()));
+				slg.setDimencao(new Integer(tDimensao.getText()));
 				slg.setBrilho(new Integer(tBrilho.getText()));
 				
 				if(slg.setIMG(lOrigem.getText())){				
