@@ -4,5 +4,7 @@
 .settings/org.eclipse.jdt.core.prefs -text
 bin/Main.class -text
 bin/Slb.class -text
+bin/Slg.class -text
 src/Main.java -text
 src/Slb.java -text
+src/Slg.java -text

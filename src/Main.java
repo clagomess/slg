@@ -1,12 +1,12 @@
 
 public class Main {
 	public static void main(String[] args) {
-		Slb slb = new Slb();
-		slb.setIMG("C:\\_desenvolvimento\\_bagulho\\lerimg\\04.png");
+		Slg slg = new Slg();
+		slg.setIMG("/home/claudio/01.jpg");
 		
-		slb.imgToBit();
-		slb.lerCabecalho();
-		slb.ajustarIMG();
-		slb.gravarBufferIMG();
+		slg.imgToBit();
+		slg.lerCabecalho();
+		slg.ajustarIMG();
+		slg.gravarBufferIMG();
 	}
 }
