@@ -17,7 +17,7 @@ public class Ui {
 		returnJanela.setResizable(false);
 		returnJanela.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		returnJanela.setLocationRelativeTo(null);
-		returnJanela.setIconImage(new ImageIcon("src/icon.png").getImage());  
+		returnJanela.setIconImage(new ImageIcon("icon.png").getImage());  
 		returnJanela.addWindowListener( new WindowAdapter( ){
 			public void windowClosing(WindowEvent w){	
 				System.exit(0);
@@ -37,7 +37,7 @@ public class Ui {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Dados"));
 		panel.setPreferredSize(new Dimension(670, 60));
 		
-		panel.add(new JLabel("Dimensão:"));
+		panel.add(new JLabel("Dimensao:"));
 
 		final JTextField tDimensao = new JTextField(5);
 		tDimensao.setText("400");
@@ -52,7 +52,7 @@ public class Ui {
 		final JLabel lOrigem = new JLabel("-");
 		final JLabel lDestino = new JLabel("-");
 		
-		panel.add(new JLabel("Imagem Gabarito:"));
+		panel.add(new JLabel("Gabarito:"));
 		JButton bArquivo = new JButton("Selecionar");
 		bArquivo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -66,7 +66,7 @@ public class Ui {
 		
 		panel.add(bArquivo);
 		
-		panel.add(new JLabel("Pasta Saida:"));
+		panel.add(new JLabel("Saida:"));
 		JButton bPasta = new JButton("Selecionar");
 		bPasta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {				
@@ -122,7 +122,7 @@ public class Ui {
 		
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
-		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Ação"));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Acao"));
 		panel.setPreferredSize(new Dimension(670, 60));		
 		JButton bExecute = new JButton("Executar");
 		bExecute.addActionListener(new ActionListener() {
@@ -146,7 +146,7 @@ public class Ui {
 					lImgBit.setIcon(new ImageIcon(slg.createThumb(200, 200)));
 					slg.gravarBufferIMG(lDestino.getText() + "/buffer_bit.png","png");
 					
-					JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!");
+					JOptionPane.showMessageDialog(null, "Operacao realizada com sucesso!");
 				}
 			}
 		});
