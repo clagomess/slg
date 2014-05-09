@@ -17,7 +17,7 @@ public class Ui {
 		returnJanela.setResizable(false);
 		returnJanela.setLayout(new FlowLayout(FlowLayout.CENTER,0,0));
 		returnJanela.setLocationRelativeTo(null);
-		returnJanela.setIconImage(new ImageIcon("icon.png").getImage());  
+		returnJanela.setIconImage(new ImageIcon("img/icon.png").getImage());  
 		returnJanela.addWindowListener( new WindowAdapter( ){
 			public void windowClosing(WindowEvent w){	
 				System.exit(0);
