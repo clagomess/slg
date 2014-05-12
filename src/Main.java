@@ -8,23 +8,24 @@ public class Main {
 		}catch(Exception e){
 			
 		}
-		/*
+		
 		Slg slg = new Slg();
 		
-		slg.setDimencao(200);
-		slg.setIMG("C:\\_desenvolvimento\\_bagulho\\lerimg\\03.png");
+		slg.setDimencao(800);
+		slg.setIMG("C:\\scan.jpg");
 		
-		slg.setBrilho(210);
+		slg.setBrilho(180);
 		
-		slg.imgToBit();
-		slg.lerCabecalho();
 		slg.ajustarIMG();
+		slg.criarArquivoGabarito("C:\\gabarito.slg");
+		slg.lerArquivoGabarito("C:\\gabarito.slg");
 		
-		slg.gravarBufferIMG("C:\\buffer.jpg","jpg");
-		slg.bitToImg();
-		slg.gravarBufferIMG("C:\\buffer_bit.png","png");*/
+		//slg.gravarBufferIMG("C:\\buffer.jpg","jpg");
+		//slg.getGabarito();
+		//slg.bitToImg();
+		//slg.gravarBufferIMG("C:\\buffer_bit.png","png");
 		
-		Ui ui = new Ui();
-		ui.home();
+		//Ui ui = new Ui();
+		//ui.home();
 	}
 }

@@ -135,8 +135,6 @@ public class Ui {
 				if(slg.setIMG(lOrigem.getText())){				
 					lImgOriginal.setIcon(new ImageIcon(slg.createThumb(200, 200)));
 					
-					slg.imgToBit();
-					slg.lerCabecalho();
 					slg.ajustarIMG();
 					
 					lImgCorrigida.setIcon(new ImageIcon(slg.createThumb(200, 200)));

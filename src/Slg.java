@@ -1,7 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -15,7 +19,14 @@ public class Slg {
 	private int brilho = 150;
 	private int dimencao = 400;
 	private Ui ui = new Ui();
+	private String log = "";
 	
+	public String getLog() {
+		return log;
+	}
+	public void setLog(String log) {
+		this.log += log;
+	}
 	public int getDimencao() {
 		return dimencao;
 	}
@@ -107,7 +118,7 @@ public class Slg {
 	private int xinicio = 0;
 	private int xfim = 0;
 	
-	public void lerCabecalho(){
+	private void lerCabecalho(){
 		int imgPixel[][] = this.imgToBit();
 		
 		boolean encontroubit = false;
@@ -179,6 +190,8 @@ public class Slg {
 	}
 	
 	public void ajustarIMG(){
+		this.lerCabecalho();
+		
 		// Calcular o angulo do GIRO
 		int catetoA;
 		
@@ -227,7 +240,7 @@ public class Slg {
 	public void bitToImg(){
 		int pixel[][] = this.imgToBit();
 		
-		BufferedImage bufferimg = new BufferedImage(this.getSizeX(), this.getSizeY(), BufferedImage.TYPE_BYTE_BINARY);
+		BufferedImage bufferimg = new BufferedImage(this.getSizeX(), this.getSizeY(), BufferedImage.TYPE_INT_ARGB);
 		
 		for(int y = 0; y < this.getSizeY(); y++){
 			for(int x = 0; x < this.getSizeX(); x++){
@@ -238,6 +251,9 @@ public class Slg {
 				}
 			}
 		}
+		
+		bufferimg.setRGB(this.ponto[0][0], this.ponto[0][1], Color.RED.getRGB());
+		bufferimg.setRGB(this.ponto[1][0], this.ponto[1][1], Color.RED.getRGB());
 		
 		this.setImg(bufferimg);
 	}
@@ -260,5 +276,78 @@ public class Slg {
 		g.dispose();
 		
 		return resizedImg;
+	}
+	
+	private int[][] getGabarito (){
+		// Pegando pontos da imagem redimencionada
+		this.lerCabecalho();
+		this.bitToImg();
+		
+		// Considerando que o cabeçalho equivale a 12 campos de largura
+		int n_width = (24 * this.getSizeX()) / (this.ponto[1][0] - this.ponto[0][0]);
+		System.out.println(n_width);
+		
+		// Redimencionando
+		this.setImg(this.createThumb(n_width, 1000));
+		this.setSizeX(this.getImg().getWidth());
+		this.setSizeY(this.getImg().getHeight());
+		
+		// Pegando novos pontos
+		this.lerCabecalho();
+		
+		// Varredura da imagem
+		return this.imgToBit();
+	}
+	
+	public String criarArquivoGabarito(String src){
+		// Composição:
+		// cabecalho qt_questoes posicoes
+		
+		String file = "%SLG ";
+		String buffer = "";
+		int pixel[][] = this.getGabarito();
+		int n_questoes = 0;
+		
+		for(int y = (this.ponto[0][1] + 2); y < this.getSizeY(); y++){
+			for(int x = (this.ponto[0][0] + 2); x < this.getSizeX(); x++){
+				if(pixel[y][x] == 1){
+					buffer += (char) (x - this.ponto[0][0]);
+					buffer += (char) (y - this.ponto[0][1]);
+					n_questoes ++;
+				}
+			}
+		}
+		
+		file += (char) n_questoes;
+		file += "\n" + buffer;
+		
+		try{
+			File slg = new File(src);
+			FileWriter fwrite = new FileWriter(slg);
+			fwrite.write(file);
+			fwrite.flush();
+			fwrite.close();
+		}catch(Exception e){
+			ui.alert(e.getMessage());
+		}
+		
+		return file;
+	}
+	
+	public void lerArquivoGabarito(String src) {
+		String buffer = "->";
+		
+		try{
+			BufferedReader slg = new BufferedReader(new FileReader(src)); 
+			String linha = slg.readLine(); 
+			while (linha != null) {
+				buffer += linha;
+			}
+			
+		}catch(IOException e){
+			ui.alert(e.getMessage());
+		}
+		
+		System.out.println(buffer);
 	}
 }
