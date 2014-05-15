@@ -11,13 +11,13 @@ public class Main {
 		
 		Slg slg = new Slg();
 		
-		slg.setDimencao(800);
+		/*slg.setDimencao(800);
 		slg.setIMG("C:\\scan.jpg");
 		
 		slg.setBrilho(180);
 		
 		slg.ajustarIMG();
-		slg.criarArquivoGabarito("C:\\gabarito.slg");
+		slg.criarArquivoGabarito("C:\\gabarito.slg");*/
 		slg.lerArquivoGabarito("C:\\gabarito.slg");
 		
 		//slg.gravarBufferIMG("C:\\buffer.jpg","jpg");

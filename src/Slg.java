@@ -300,10 +300,15 @@ public class Slg {
 	}
 	
 	public String criarArquivoGabarito(String src){
-		// Composição:
-		// cabecalho qt_questoes posicoes
+		/* Composição:
+		 * --- Cabecalho ---
+		 * Identificador: 4 (char)
+		 * n_questoes: 3 (int) pad 3 - '0'
+		 * --- Fim Cabecalho 6 (char) ---
+		 * Posições Questões: ^ 2(char)
+		 */
 		
-		String file = "%SLG ";
+		String file = "%SLG";
 		String buffer = "";
 		int pixel[][] = this.getGabarito();
 		int n_questoes = 0;
@@ -318,8 +323,8 @@ public class Slg {
 			}
 		}
 		
-		file += (char) n_questoes;
-		file += "\n" + buffer;
+		file += String.format("%03d", n_questoes);
+		file += buffer;
 		
 		try{
 			File slg = new File(src);
@@ -334,20 +339,41 @@ public class Slg {
 		return file;
 	}
 	
-	public void lerArquivoGabarito(String src) {
-		String buffer = "->";
+	public String[] lerArquivoGabarito(String src) {
+		String buffer = "";
+		String linha = "";
 		
 		try{
-			BufferedReader slg = new BufferedReader(new FileReader(src)); 
-			String linha = slg.readLine(); 
-			while (linha != null) {
+			BufferedReader slg = new BufferedReader(new FileReader(src));
+			while ((linha = slg.readLine()) != null) {
 				buffer += linha;
 			}
-			
+			slg.close();
 		}catch(IOException e){
 			ui.alert(e.getMessage());
 		}
 		
-		System.out.println(buffer);
+		if(buffer.length() < 8){
+			ui.alert("Não foi possivel ler o arquivo!");
+			return null;
+		}
+		
+		if(!buffer.substring(0, 4).equals("%SLG")){
+			ui.alert("Arquivo não corresponde ao gabarito SLG ou está corrompido.");
+			return null;
+		}
+		
+		String posxfita = buffer.substring(7);
+		String posx[] = new String[posxfita.length()];
+		int posxid = 0;
+		for(int i = 0; i < posxfita.length(); i++){
+			posx[posxid] = "";
+			posx[posxid] += posxfita.charAt(i);
+			i++;
+			posx[posxid] += posxfita.charAt(i);
+			posxid++;
+		}
+		
+		return posx;
 	}
 }
