@@ -5,4 +5,5 @@
 src/Main.java -text
 src/Slg.java -text
 src/Ui.java -text
-src/img/icon.png -text
+src/resources/VERSAO -text
+src/resources/icon.png -text
