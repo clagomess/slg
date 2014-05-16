@@ -175,17 +175,17 @@ public class Slg {
 			y++;
 		}
 		
-		System.out.println(new Integer(xinicio).toString() + " - " + new Integer(xfim).toString());
+		//System.out.println(new Integer(xinicio).toString() + " - " + new Integer(xfim).toString());
 		
 		this.ponto[0][0] += 1;
 		this.ponto[0][1] += 1;
 		this.ponto[1][0] += 1;
 		this.ponto[1][1] += 1;
 		
-		System.out.println("AX: " + new Integer(this.ponto[0][0]).toString());
-		System.out.println("AY: " + new Integer(this.ponto[0][1]).toString());
-		System.out.println("BX: " + new Integer(this.ponto[1][0]).toString());
-		System.out.println("BY: " + new Integer(this.ponto[1][1]).toString());
+		//System.out.println("AX: " + new Integer(this.ponto[0][0]).toString());
+		//System.out.println("AY: " + new Integer(this.ponto[0][1]).toString());
+		//System.out.println("BX: " + new Integer(this.ponto[1][0]).toString());
+		//System.out.println("BY: " + new Integer(this.ponto[1][1]).toString());
 	}
 	
 	public void ajustarIMG(){
@@ -206,8 +206,8 @@ public class Slg {
 		double sin = catetoA / (Math.sqrt(Math.pow(catetoA, 2) + Math.pow(catetoO, 2)));
 		double angulo = Math.toDegrees(Math.asin(sin));
 		
-		System.out.println("Angulo: " + new Double(angulo).toString());
-		System.out.println("Cateto: " + new Double(catetoO).toString());
+		//System.out.println("Angulo: " + new Double(angulo).toString());
+		//System.out.println("Cateto: " + new Double(catetoO).toString());
 		
 		//Calcula o Giro
 		double giro;
@@ -222,7 +222,7 @@ public class Slg {
 			giro = 0;
 		}
 		
-		System.out.println("GIRO: " + new Double(giro).toString());
+		//System.out.println("GIRO: " + new Double(giro).toString());
 		
 		//Rodando, Rodando		
 		BufferedImage resizedImg = new BufferedImage(this.getSizeX(),this.getSizeY(),this.getImg().getType());
@@ -284,7 +284,7 @@ public class Slg {
 		
 		// Considerando que o cabeçalho equivale a 12 campos de largura
 		int n_width = (24 * this.getSizeX()) / (this.ponto[1][0] - this.ponto[0][0]);
-		System.out.println(n_width);
+		//System.out.println(n_width);
 		
 		// Redimencionando
 		this.setImg(this.createThumb(n_width, 1000));
@@ -318,6 +318,7 @@ public class Slg {
 					buffer += (char) (x - this.ponto[0][0]);
 					buffer += (char) (y - this.ponto[0][1]);
 					n_questoes ++;
+					//System.out.println("Y=" + (y - this.ponto[0][1]) + ";X=" + (x - this.ponto[0][0]));
 				}
 			}
 		}
@@ -362,17 +363,50 @@ public class Slg {
 			return null;
 		}
 		
-		String posxfita = buffer.substring(7);
-		String posx[] = new String[posxfita.length()];
-		int posxid = 0;
-		for(int i = 0; i < posxfita.length(); i++){
-			posx[posxid] = "";
-			posx[posxid] += posxfita.charAt(i);
+		String posfita = buffer.substring(7);
+		String pos[] = new String[posfita.length()];
+		int posid = 0;
+		for(int i = 0; i < posfita.length(); i++){
+			pos[posid] = "";
+			pos[posid] += posfita.charAt(i);
 			i++;
-			posx[posxid] += posxfita.charAt(i);
-			posxid++;
+			pos[posid] += posfita.charAt(i);
+			posid++;
 		}
 		
-		return posx;
+		return pos;
+	}
+	
+	public void corrigirprova(String gabarito[]){
+		int prova[][] = this.getGabarito();
+		int paridade  = 1; //Margem de erro de 1 pixel
+		
+		for(int i = 0; i < gabarito.length; i++){
+			if(gabarito[i] == null){
+				continue; //tapando o sol com a peneira
+			}
+			
+			int posx = (int) gabarito[i].charAt(0);
+			int posy = (int) gabarito[i].charAt(1);
+			
+			posx += this.ponto[0][0];
+			posy += this.ponto[0][1];
+			
+			int minX = ((posx - paridade) < 0 ? 0 : (posx - paridade));
+			int minY = ((posy - paridade) < 0 ? 0 : (posy - paridade));
+			int maxX = (posx + paridade);
+			int maxY = (posy + paridade);
+			
+			// System.out.println(posx + "-" + posy + "-" + minX + "-" + maxX + "-" + minY + "-" + maxY);
+			
+			for(int y = minY; y <= maxY; y++){
+				for(int x = minX; x <= maxX; x++){
+					if(prova[y][x] == 1){
+						//ACERTOU
+						this.getImg().setRGB(x, y, Color.RED.getRGB());
+					}
+				}
+			}
+		}
 	}
 }

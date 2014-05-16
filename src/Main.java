@@ -9,7 +9,7 @@ public class Main {
 			System.out.print(e.getMessage());
 		}
 		
-		/*Slg slg = new Slg();
+		Slg slg = new Slg();
 		
 		slg.setDimencao(800);
 		slg.setIMG("C:\\scan.jpg");
@@ -17,16 +17,18 @@ public class Main {
 		slg.setBrilho(180);
 		
 		slg.ajustarIMG();
-		slg.criarArquivoGabarito("C:\\gabarito.slg");
-		slg.lerArquivoGabarito("C:\\gabarito.slg");*/
+		//slg.criarArquivoGabarito("C:\\gabarito.slg");
+		//slg.lerArquivoGabarito("C:\\gabarito.slg");
 		
-		//slg.gravarBufferIMG("C:\\buffer.jpg","jpg");
+		slg.gravarBufferIMG("C:\\gabarito.png","png");
+		slg.corrigirprova(slg.lerArquivoGabarito("C:\\gabarito.slg"));
+		slg.gravarBufferIMG("C:\\gabarito_.png","png");
 		//slg.getGabarito();
 		//slg.bitToImg();
 		//slg.gravarBufferIMG("C:\\buffer_bit.png","png");
 		
-		Ui ui = new Ui();
+		/*Ui ui = new Ui();
 		ui.home();
-		System.out.print("SLG - Versão: " + ui.versao());
+		System.out.print("SLG - Versão: " + ui.versao());*/
 	}
 }
