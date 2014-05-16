@@ -6,7 +6,7 @@ public class Main {
 		try{
 			UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName());
 		}catch(Exception e){
-			
+			System.out.print(e.getMessage());
 		}
 		
 		/*Slg slg = new Slg();
@@ -27,6 +27,6 @@ public class Main {
 		
 		Ui ui = new Ui();
 		ui.home();
-		System.out.print("SLG - Vers„o: " + ui.versao());
+		System.out.print("SLG - Vers√£o: " + ui.versao());
 	}
 }

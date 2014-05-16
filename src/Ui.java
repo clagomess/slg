@@ -257,19 +257,112 @@ public class Ui {
 	}
 	
 	public void corrigirprovas(){
+		JPanel panel;
 		
+		JFrame janela = this.getJanela(500, 500, "Corrigir Provas");
+		janela.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Seleção"));
+		panel.setPreferredSize(new Dimension(470, 60));
+		
+		JButton bProvas = new JButton("Selecionar Provas");
+		final JFileChooser fProvas = new JFileChooser();
+		fProvas.setFileFilter(new FileNameExtensionFilter("Imagens", "jpg", "png"));
+		fProvas.setMultiSelectionEnabled(true);
+		
+		bProvas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				fProvas.showOpenDialog(null);
+			}
+		});
+		
+		JButton bGabarito = new JButton("Selecionar Gabarito");
+		final JFileChooser fGabarito = new JFileChooser("");
+		fGabarito.setFileFilter(new FileNameExtensionFilter("Gabarito", "slg"));
+		bGabarito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				
+				fGabarito.showOpenDialog(null);
+				
+				//lDestino.setText(fArquivo.getSelectedFile().getPath());
+			}
+		});
+		
+		JButton bSaida = new JButton("Pasta Saida");
+		final JFileChooser fSaida = new JFileChooser();
+		fSaida.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		bSaida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				
+				fSaida.showOpenDialog(null);
+				
+				//lDestino.setText(fArquivo.getSelectedFile().getPath());
+			}
+		});
+		
+		panel.add(bProvas);
+		panel.add(bGabarito);
+		panel.add(bSaida);
+		janela.add(panel);
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Provas Selecionadas"));
+		panel.setPreferredSize(new Dimension(470, 100));
+		
+		JTextArea tProvas = new JTextArea(3, 34);
+		tProvas.setEditable(false);
+		JScrollPane sProvas = new JScrollPane(tProvas); 
+		panel.add(sProvas);	
+		
+		janela.add(panel);
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Gabarito"));
+		panel.setPreferredSize(new Dimension(470, 60));
+		janela.add(panel);
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Pasta de saida"));
+		panel.setPreferredSize(new Dimension(470, 60));
+		janela.add(panel);
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Progresso"));
+		panel.setPreferredSize(new Dimension(470, 60));
+		
+		JProgressBar progresso = new JProgressBar(0, 100);
+		//progresso.setValue(10);
+		//progresso.setStringPainted(true);
+		progresso.setPreferredSize(new Dimension(450, 20));
+		panel.add(progresso);
+		janela.add(panel);
+		
+		panel = new JPanel();
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Ação"));
+		panel.setPreferredSize(new Dimension(470, 60));
+		janela.add(panel);
+		
+		janela.setVisible(true);
 	}
 	
-	public void sobre(){		
-		JFrame janela = this.getJanela(350, 280, "Sobre");
+	public void sobre(){
+		JFrame janela = this.getJanela(450, 280, "Sobre");
 		janela.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
 		
 		String html = "";
 		html += "<html>";
 		html += "<center>";
 		html += "<h4>Sistema Leitor de Gabarito</h4>";
-		html += "Cl�udio Gomes - cla.gomess@gmail.com - gomespro.com.br<br/><br/>";
-		html += "Vers�o: " + this.versao();
+		html += "Cláudio Gomes - cla.gomess@gmail.com - gomespro.com.br<br/><br/>";
+		html += "Versão: " + this.versao();
 		html += "</center>";
 		html += "</html>";
 		JLabel lHtml = new JLabel(html);
@@ -307,9 +400,8 @@ public class Ui {
 		
 		mCoProvas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//janelaAberta.setVisible(false);
-				//Interface ui = new Interface();
-				//ui.pesquisarVisitantes();
+				Ui ui = new Ui();
+				ui.corrigirprovas();
 			}
 		});
 		

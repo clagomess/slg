@@ -282,7 +282,7 @@ public class Slg {
 		this.lerCabecalho();
 		this.bitToImg();
 		
-		// Considerando que o cabeçalho equivale a 12 campos de largura
+		// Considerando que o cabeÃ§alho equivale a 12 campos de largura
 		int n_width = (24 * this.getSizeX()) / (this.ponto[1][0] - this.ponto[0][0]);
 		System.out.println(n_width);
 		
@@ -299,12 +299,12 @@ public class Slg {
 	}
 	
 	public String criarArquivoGabarito(String src){
-		/* Composição:
+		/* ComposiÃ§Ã£o:
 		 * --- Cabecalho ---
 		 * Identificador: 4 (char)
 		 * n_questoes: 3 (int) pad 3 - '0'
 		 * --- Fim Cabecalho 6 (char) ---
-		 * Posições Questões: ^ 2(char)
+		 * PosiÃ§Ãµes QuestÃµes: ^ 2(char)
 		 */
 		
 		String file = "%SLG";
@@ -353,12 +353,12 @@ public class Slg {
 		}
 		
 		if(buffer.length() < 8){
-			ui.alert("Não foi possivel ler o arquivo!");
+			ui.alert("NÃ£o foi possivel ler o arquivo!");
 			return null;
 		}
 		
 		if(!buffer.substring(0, 4).equals("%SLG")){
-			ui.alert("Arquivo não corresponde ao gabarito SLG ou está corrompido.");
+			ui.alert("Arquivo nÃ£o corresponde ao gabarito SLG ou estÃ¡ corrompido.");
 			return null;
 		}
 		
