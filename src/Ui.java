@@ -9,6 +9,7 @@ import java.io.FileReader;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.TableModel;
 
 
 public class Ui {
@@ -272,36 +273,13 @@ public class Ui {
 		fProvas.setFileFilter(new FileNameExtensionFilter("Imagens", "jpg", "png"));
 		fProvas.setMultiSelectionEnabled(true);
 		
-		bProvas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				fProvas.showOpenDialog(null);
-			}
-		});
-		
 		JButton bGabarito = new JButton("Selecionar Gabarito");
 		final JFileChooser fGabarito = new JFileChooser("");
 		fGabarito.setFileFilter(new FileNameExtensionFilter("Gabarito", "slg"));
-		bGabarito.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				
-				fGabarito.showOpenDialog(null);
-				
-				//lDestino.setText(fArquivo.getSelectedFile().getPath());
-			}
-		});
 		
 		JButton bSaida = new JButton("Pasta Saida");
 		final JFileChooser fSaida = new JFileChooser();
 		fSaida.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		bSaida.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				
-				fSaida.showOpenDialog(null);
-				
-				//lDestino.setText(fArquivo.getSelectedFile().getPath());
-			}
-		});
 		
 		panel.add(bProvas);
 		panel.add(bGabarito);
@@ -313,23 +291,28 @@ public class Ui {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Provas Selecionadas"));
 		panel.setPreferredSize(new Dimension(470, 100));
 		
-		JTextArea tProvas = new JTextArea(3, 34);
+		final JTextArea tProvas = new JTextArea(6,48);
+		tProvas.setFont(new Font("Verdana", Font.PLAIN, 9));
 		tProvas.setEditable(false);
-		JScrollPane sProvas = new JScrollPane(tProvas); 
+		JScrollPane sProvas = new JScrollPane(tProvas);
+		sProvas.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		panel.add(sProvas);	
-		
 		janela.add(panel);
 		
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Gabarito"));
-		panel.setPreferredSize(new Dimension(470, 60));
+		panel.setPreferredSize(new Dimension(470, 50));
+		final JLabel lGabarito = new JLabel("-");
+		panel.add(lGabarito);
 		janela.add(panel);
 		
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Pasta de saida"));
-		panel.setPreferredSize(new Dimension(470, 60));
+		panel.setPreferredSize(new Dimension(470, 50));
+		final JLabel lSaida = new JLabel("-");
+		panel.add(lSaida);
 		janela.add(panel);
 		
 		panel = new JPanel();
@@ -337,8 +320,7 @@ public class Ui {
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Progresso"));
 		panel.setPreferredSize(new Dimension(470, 60));
 		
-		JProgressBar progresso = new JProgressBar(0, 100);
-		//progresso.setValue(10);
+		final JProgressBar progresso = new JProgressBar(0, 100);
 		//progresso.setStringPainted(true);
 		progresso.setPreferredSize(new Dimension(450, 20));
 		panel.add(progresso);
@@ -348,7 +330,80 @@ public class Ui {
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT,5,5));
 		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED), "Ação"));
 		panel.setPreferredSize(new Dimension(470, 60));
+		JButton bExecutar = new JButton("Executar");
+		panel.add(bExecutar);
 		janela.add(panel);
+		
+		//# Ações
+		bProvas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {				
+				fProvas.showOpenDialog(null);
+				
+				if(fProvas.getSelectedFiles().length > 0){
+					Integer idx = 1;
+					tProvas.setText("");
+					String text = "";
+					
+					for(int i = 0; i < fProvas.getSelectedFiles().length; i++){
+						text += idx.toString() + " - " + fProvas.getSelectedFiles()[i].getName() + "\n";
+						idx++;
+					}
+					
+					tProvas.setText(text);
+				}
+			}
+		});
+		
+		bGabarito.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				fGabarito.showOpenDialog(null);
+				lGabarito.setText(fGabarito.getSelectedFile().getPath());
+			}
+		});
+		
+		bSaida.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				fSaida.showOpenDialog(null);				
+				lSaida.setText(fSaida.getSelectedFile().getPath());
+			}
+		});
+		
+		bExecutar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(fProvas.getSelectedFiles().length == 0){
+					JOptionPane.showMessageDialog(null,"É necessário selecionar as provas!");
+					return;
+				}
+				
+				if(lGabarito.getText().equals("-")){
+					JOptionPane.showMessageDialog(null,"É necessário selecionar o gabarito!");
+					return;
+				}
+				
+				if(lSaida.getText().equals("-")){
+					JOptionPane.showMessageDialog(null,"É necessário selecionar a pasta de saida!");
+					return;
+				}
+				
+				for(int i = 0; i < fProvas.getSelectedFiles().length; i++){
+					Slg slg = new Slg();					
+					slg.setDimencao(800);
+					slg.setIMG(fProvas.getSelectedFiles()[i].getPath());
+					slg.setBrilho(180);
+					slg.ajustarIMG();
+					slg.gravarBufferIMG(lSaida.getText() + "/buffer_" + fProvas.getSelectedFiles()[i].getName(),"jpg");
+					
+					//Progresso
+					int percent = (int) Math.ceil((fProvas.getSelectedFiles().length * 100) / (i+1));
+					progresso.setValue(percent);
+				}
+				
+				JOptionPane.showMessageDialog(null,"Operação realizada com sucesso!");
+			}
+		});
+		
+		
+		//# Fim Ações
 		
 		janela.setVisible(true);
 	}
@@ -360,8 +415,9 @@ public class Ui {
 		String html = "";
 		html += "<html>";
 		html += "<center>";
-		html += "<h4>Sistema Leitor de Gabarito</h4>";
+		html += "<h1>Sistema Leitor de Gabarito</h1>";
 		html += "Cláudio Gomes - cla.gomess@gmail.com - gomespro.com.br<br/><br/>";
+		html += "Licensa: (Ainda não definida)<br/><br/>";
 		html += "Versão: " + this.versao();
 		html += "</center>";
 		html += "</html>";

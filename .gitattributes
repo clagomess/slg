@@ -1,6 +1,7 @@
 * text=auto !eol
 /.classpath -text
 /.project -text
+.settings/org.eclipse.core.resources.prefs -text
 .settings/org.eclipse.jdt.core.prefs -text
 src/Main.java -text
 src/Slg.java -text
