@@ -17,7 +17,7 @@ public class Main {
 		slg.setBrilho(180);
 		
 		slg.ajustarIMG();
-		//slg.criarArquivoGabarito("C:\\gabarito.slg");
+		slg.criarArquivoGabarito("C:\\gabarito.slg");
 		//slg.lerArquivoGabarito("C:\\gabarito.slg");
 		
 		slg.gravarBufferIMG("C:\\gabarito.png","png");

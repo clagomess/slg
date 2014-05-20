@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
@@ -308,23 +310,68 @@ public class Slg {
 		 */
 		
 		String file = "%SLG";
-		String buffer = "";
 		int pixel[][] = this.getGabarito();
-		int n_questoes = 0;
+		final int paridade = 1;
+		ArrayList<Integer> buffer_y = new ArrayList<Integer>();
+		ArrayList<Integer>buffer_x = new ArrayList<Integer>();
 		
 		for(int y = (this.ponto[0][1] + 2); y < this.getSizeY(); y++){
 			for(int x = (this.ponto[0][0] + 2); x < this.getSizeX(); x++){
 				if(pixel[y][x] == 1){
-					buffer += (char) (x - this.ponto[0][0]);
-					buffer += (char) (y - this.ponto[0][1]);
-					n_questoes ++;
-					//System.out.println("Y=" + (y - this.ponto[0][1]) + ";X=" + (x - this.ponto[0][0]));
+					int curr_y = (y - this.ponto[0][1]);
+					int curr_x = (x - this.ponto[0][0]);
+					
+					if(buffer_y.size() == 0 && buffer_x.size() == 0){
+						buffer_y.add(curr_y);
+						buffer_x.add(curr_x);
+					}else{
+						Collections.sort(buffer_y);
+						Collections.sort(buffer_x);
+						
+						boolean y_pass = false, x_pass = false;
+						int y_pass_val = 0, x_pass_val = 0;
+						
+						for(int i = 0; i < buffer_y.size(); i++){
+							if(
+								buffer_y.get(i) >= (curr_y - paridade) && 
+								buffer_y.get(i) <= (curr_y + paridade)
+							){
+								y_pass = true;
+								y_pass_val = buffer_y.get(i);
+							}
+						}
+						
+						for(int i = 0; i < buffer_x.size(); i++){
+							if(
+								buffer_x.get(i) >= (curr_x - paridade) && 
+								buffer_x.get(i) <= (curr_x + paridade)
+							){
+								x_pass = true;
+								x_pass_val = buffer_x.get(i);
+							}
+						}
+						
+						if(!y_pass){
+							buffer_y.add(curr_y);
+						}
+						
+						if(!x_pass){
+							buffer_x.add(curr_x);
+						}
+						
+						if(!y_pass && x_pass){
+							file += (char) x_pass_val;
+							file += (char) curr_y;
+						}
+						
+						if(y_pass && !x_pass){
+							file += (char) curr_x;
+							file += (char) y_pass_val;
+						}
+					}
 				}
 			}
 		}
-		
-		file += String.format("%03d", n_questoes);
-		file += buffer;
 		
 		try{
 			File slg = new File(src);
@@ -363,7 +410,7 @@ public class Slg {
 			return null;
 		}
 		
-		String posfita = buffer.substring(7);
+		String posfita = buffer.substring(4);
 		String pos[] = new String[posfita.length()];
 		int posid = 0;
 		for(int i = 0; i < posfita.length(); i++){
@@ -383,7 +430,7 @@ public class Slg {
 		
 		for(int i = 0; i < gabarito.length; i++){
 			if(gabarito[i] == null){
-				continue; //tapando o sol com a peneira
+				continue;
 			}
 			
 			int posx = (int) gabarito[i].charAt(0);
@@ -394,15 +441,14 @@ public class Slg {
 			
 			int minX = ((posx - paridade) < 0 ? 0 : (posx - paridade));
 			int minY = ((posy - paridade) < 0 ? 0 : (posy - paridade));
-			int maxX = (posx + paridade);
-			int maxY = (posy + paridade);
+			int maxX = ((posx + paridade) >= this.getSizeX() ? (this.getSizeX() - 1) : (posx + paridade));
+			int maxY = ((posy + paridade) >= this.getSizeY() ? (this.getSizeY() - 1) : (posy + paridade));
 			
-			// System.out.println(posx + "-" + posy + "-" + minX + "-" + maxX + "-" + minY + "-" + maxY);
+			//System.out.println(posx + "-" + posy + "-" + minX + "-" + maxX + "-" + minY + "-" + maxY);
 			
 			for(int y = minY; y <= maxY; y++){
 				for(int x = minX; x <= maxX; x++){
 					if(prova[y][x] == 1){
-						//ACERTOU
 						this.getImg().setRGB(x, y, Color.RED.getRGB());
 					}
 				}
