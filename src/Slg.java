@@ -368,6 +368,11 @@ public class Slg {
 							file += (char) curr_x;
 							file += (char) y_pass_val;
 						}
+						
+						if(!y_pass && !x_pass){
+							file += (char) curr_x;
+							file += (char) curr_y;
+						}
 					}
 				}
 			}
@@ -426,7 +431,7 @@ public class Slg {
 	
 	public void corrigirprova(String gabarito[]){
 		int prova[][] = this.getGabarito();
-		int paridade  = 1; //Margem de erro de 1 pixel
+		int paridade  = 2; //Margem de erro de 2 pixel
 		
 		for(int i = 0; i < gabarito.length; i++){
 			if(gabarito[i] == null){
