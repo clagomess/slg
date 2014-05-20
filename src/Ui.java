@@ -385,20 +385,31 @@ public class Ui {
 					return;
 				}
 				
+				String provas_corrigidas[][] = new String[fProvas.getSelectedFiles().length][3];
+				
 				for(int i = 0; i < fProvas.getSelectedFiles().length; i++){
 					Slg slg = new Slg();					
 					slg.setDimencao(800);
 					slg.setIMG(fProvas.getSelectedFiles()[i].getPath());
 					slg.setBrilho(180);
 					slg.ajustarIMG();
-					slg.gravarBufferIMG(lSaida.getText() + "/buffer_" + fProvas.getSelectedFiles()[i].getName(),"jpg");
+					slg.gravarBufferIMG(lSaida.getText() + "/prova_" + fProvas.getSelectedFiles()[i].getName(),"jpg");
+					int dados[] = slg.corrigirprova(slg.lerArquivoGabarito(fGabarito.getSelectedFile().getPath()));
+					slg.gravarBufferIMG(lSaida.getText() + "/corrigida_" + fProvas.getSelectedFiles()[i].getName() + "_.png","png");
 					
 					//Progresso
 					int percent = (int) Math.ceil((fProvas.getSelectedFiles().length * 100) / (i+1));
 					progresso.setValue(percent);
+					
+					//Resultado
+					provas_corrigidas[i][0] = new Integer((i+1)).toString();
+					provas_corrigidas[i][1] = fProvas.getSelectedFiles()[i].getName();
+					provas_corrigidas[i][2] = dados[0] + "/" + dados[1];
 				}
 				
 				JOptionPane.showMessageDialog(null,"Operação realizada com sucesso!");
+				Ui ui = new Ui();
+				ui.resultadoCorrecao(provas_corrigidas);
 			}
 		});
 		
@@ -424,6 +435,26 @@ public class Ui {
 		JLabel lHtml = new JLabel(html);
 		
 		janela.add(lHtml);		
+		janela.setVisible(true);
+	}
+	
+	public void resultadoCorrecao(String rs[][]){
+		JPanel panel = new JPanel();;
+		
+		JFrame janela = this.getJanela(500, 500, "Resultado Provas");
+		janela.setLayout(new FlowLayout(FlowLayout.LEFT,10,10));
+
+		JTable tResultado = new JTable(rs,new String []{"#","Prova","Nota"});
+		
+		JScrollPane sResultado = new JScrollPane(tResultado);
+		sResultado.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		
+		panel.setPreferredSize(new Dimension(480,480));
+		panel.setLayout(new BorderLayout());
+		panel.add(tResultado.getTableHeader(), BorderLayout.PAGE_START);
+		panel.add(sResultado, BorderLayout.CENTER);
+		
+		janela.add(panel);
 		janela.setVisible(true);
 	}
 	

@@ -429,9 +429,12 @@ public class Slg {
 		return pos;
 	}
 	
-	public void corrigirprova(String gabarito[]){
+	public int[] corrigirprova(String gabarito[]){
 		int prova[][] = this.getGabarito();
 		int paridade  = 2; //Margem de erro de 2 pixel
+		
+		// 0 => acertos, 1 => n questoes
+		int dados[] = new int[]{0,(gabarito.length / 2)};
 		
 		for(int i = 0; i < gabarito.length; i++){
 			if(gabarito[i] == null){
@@ -451,13 +454,19 @@ public class Slg {
 			
 			//System.out.println(posx + "-" + posy + "-" + minX + "-" + maxX + "-" + minY + "-" + maxY);
 			
+			boolean acertou = false;
+			
 			for(int y = minY; y <= maxY; y++){
 				for(int x = minX; x <= maxX; x++){
-					if(prova[y][x] == 1){
+					if(prova[y][x] == 1 && !acertou){
 						this.getImg().setRGB(x, y, Color.RED.getRGB());
+						acertou = true;
+						dados[0]++;
 					}
 				}
 			}
 		}
+		
+		return dados;
 	}
 }

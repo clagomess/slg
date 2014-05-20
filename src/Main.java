@@ -9,7 +9,7 @@ public class Main {
 			System.out.print(e.getMessage());
 		}
 		
-		Slg slg = new Slg();
+		/*Slg slg = new Slg();
 		
 		slg.setDimencao(800);
 		slg.setIMG("C:\\scan.jpg");
@@ -26,9 +26,9 @@ public class Main {
 		//slg.getGabarito();
 		//slg.bitToImg();
 		//slg.gravarBufferIMG("C:\\buffer_bit.png","png");
-		
-		/*Ui ui = new Ui();
+		*/
+		Ui ui = new Ui();
 		ui.home();
-		System.out.print("SLG - Versão: " + ui.versao());*/
+		System.out.print("SLG - Versão: " + ui.versao());
 	}
 }
